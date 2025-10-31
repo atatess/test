@@ -1,0 +1,88 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ */
+package com.mycompany.dijkstraexpressionevaluator;
+
+/**
+ *
+ * @author tivadigi
+ */
+public class DijkstraExpressionEvaluator {
+
+    public static void main(String[] args) {
+        String expr = "( ( ( 3 - ( 2 * ( 5 + 3 ) ) ) + ( 5 * 10 ) ) / 2 )";
+        double result = evaluate(expr);
+        System.out.println("Result: " + result);  // Should print 18.5
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    public static double evaluate(String expr) {
+        // Create two stacks: one for values, one for operators
+        GenericArrayStack<Double> values = new GenericArrayStack<>(100);
+        GenericArrayStack<String> operators = new GenericArrayStack<>(100);
+
+        // Split the expression by spaces that can be added as tokens: ["(", "(", "3", "-", etc.]
+        String[] tokens = expr.split(" ");
+
+        for (int i = 0; i < tokens.length; i++) {
+            String token = tokens[i];
+
+            if (token.equals("(")) {
+                continue;// Ignore left parentheses
+            } else if (token.equals("+") || token.equals("-")
+                    || token.equals("*") || token.equals("/")) {
+                // Push operator
+                operators.push(token);
+            } else if (token.equals(")")) {
+                // Pop operator and two values, then apply
+                String op = operators.pop();
+                double val2 = values.pop();
+                double val1 = values.pop();
+
+                double result = 0;
+                
+                if (op.equals("+")) {
+                    result = val1 + val2;
+                } else if (op.equals("-")) {
+                    result = val1 - val2;
+                } else if (op.equals("*")) {
+                    result = val1 * val2;
+                } else if (op.equals("/")) {
+                    result = val1 / val2;
+                }
+
+                // Push result back
+                values.push(result);
+            } else {
+                // Dealing with operand tokens but must be a number
+                values.push(Double.parseDouble(token));
+            }
+        }
+        
+        // Process any remaining operators
+        while (!operators.isEmpty()) {
+            String op = operators.pop();
+            double val2 = values.pop();
+            double val1 = values.pop();
+
+            double result = 0;
+            if (op.equals("+")) result = val1 + val2;
+            else if (op.equals("-")) result = val1 - val2;
+            else if (op.equals("*")) result = val1 * val2;
+            else if (op.equals("/")) result = val1 / val2;
+
+            values.push(result);
+        }
+
+        // Final result is on top of the value stack
+        return values.pop();
+    }
+
+   
+}
