@@ -1,0 +1,21 @@
+public Node reverseDoublyList(Node head) {
+    Node current = head;
+    Node temp = null;
+
+    while (current != null) {
+        // Swap prev and next pointers
+        temp = current.prev;
+        current.prev = current.next;
+        current.next = temp;
+
+        // Move to the next node (which is previous before swap)
+        current = current.prev;
+    }
+
+    // After loop, temp points to the old head's previous node (the new head)
+    if (temp != null) {
+        head = temp.prev;
+    }
+
+    return head;
+}
