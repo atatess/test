@@ -1,0 +1,15 @@
+public Node reverseList(Node head) {
+    Node prev = null;
+    Node current = head;
+    Node next = null;
+
+    while (current != null) {
+        next = current.next;  // store next node
+        current.next = prev;  // reverse the pointer
+        prev = current;       // move prev one step forward
+        current = next;       // move current one step forward
+    }
+
+    // prev is the new head
+    return prev;
+}
