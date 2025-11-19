@@ -63,4 +63,21 @@ public class BinarySearchTree<T> {
             return node;
         }
     }
+
+    public int countLeafNodes(Node<T> node) {
+        if (node == null) {
+            return 0;
+        }
+        if (node.left == null && node.right == null) {
+            return 1;
+        }
+        return countLeafNodes(node.left) + countLeafNodes(node.right);
+    }
+
+    public int calculateDepth(Node<T> node) {
+        if (node == null) {
+            return 0;
+        }
+        return 1 + Math.max(calculateDepth(node.left), calculateDepth(node.right));
+    }
 }
